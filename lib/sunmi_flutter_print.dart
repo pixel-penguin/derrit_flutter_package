@@ -54,6 +54,13 @@ class SunmiFlutterPrint {
     await _channel.invokeMethod("setFontName",args);
   }
 
+  /// Skip [n] lines
+  static Future<void> emptyLines(int n) async {
+    if (n > 0) {
+      await _channel.invokeMethod('emptyLines', {"n": n});
+    }
+  }
+  
   static Future<Null> setFontSize({ int fontSize }) async {
     Map<String,dynamic> args = <String,dynamic>{};
     args.putIfAbsent("fontSize", () => fontSize);
