@@ -2,9 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
-import 'src/sunmi_styles.dart';
+
+import 'package:flutter_sunmi_printer/src/enums.dart';
 
 import 'models.dart';
+
+import 'src/sunmi_col.dart';
+import 'src/sunmi_styles.dart';
 
 class SunmiFlutterPrint {
   static const MethodChannel _channel =
@@ -49,6 +53,15 @@ class SunmiFlutterPrint {
 
   static Future<Null> selfCheckingPrinter() async {
     await _channel.invokeMethod("selfCheckingPrinter");
+  }
+
+  /// Print horizontal full width separator
+  static Future<void> hr({
+    String ch = '-',
+    int len = 31,
+    linesAfter = 0,
+  }) async {
+    await text(List.filled(len, ch[0]).join(), linesAfter: linesAfter);
   }
 
   // STANDAR FUNCTION
