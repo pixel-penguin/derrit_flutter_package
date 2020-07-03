@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 
-import 'package:flutter_sunmi_printer/src/enums.dart';
+import 'src/enums.dart';
 
 import 'models.dart';
 
@@ -86,6 +86,30 @@ class SunmiFlutterPrint {
     if (n > 0) {
       await _channel.invokeMethod('emptyLines', {"n": n});
     }
+  }
+
+  static Future<void> row({
+    List<SunmiCol> cols,
+    bool bold: false,
+    bool underline: false,
+    SunmiSize textSize: SunmiSize.md,
+    int linesAfter: 0,
+  }) async {
+    final isSumValid = cols.fold(0, (int sum, col) => sum + col.width) == 12;
+    if (!isSumValid) {
+      throw Exception('Total columns width must be equal to 12');
+    }
+
+    final colsJson = List<Map<String, String>>.from(
+        cols.map<Map<String, String>>((SunmiCol col) => col.toJson()));
+
+    await _channel.invokeMethod('printRow', {
+      "cols": json.encode(colsJson),
+      "bold": bold,
+      "underline": underline,
+      "textSize": textSize.value,
+      "linesAfter": linesAfter,
+    });
   }
 
   static Future<Null> setFontSize({int fontSize}) async {
