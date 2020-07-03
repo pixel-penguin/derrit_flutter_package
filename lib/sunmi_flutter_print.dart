@@ -136,7 +136,7 @@ class SunmiFlutterPrint {
     SunmiStyles styles = const SunmiStyles(),
     int linesAfter = 0,
   }) async {
-    await _channel.invokeMethod(PRINT_TEXT, {
+    await _channel.invokeMethod('printText', {
       "text": text,
       "bold": styles.bold,
       "underline": styles.underline,
